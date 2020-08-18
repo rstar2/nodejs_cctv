@@ -1,0 +1,11 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#0D3425",
+        "titleBar.activeBackground": "#124934",
+        "titleBar.activeForeground": "#F3FCF8"
+    },
+    "cSpell.words": [
+        "livecam"
+    ],
+    "editor.tabSize": 2
+}
