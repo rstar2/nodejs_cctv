@@ -10,7 +10,7 @@ const arrayBufferToBase64 = (buffer) => {
   return window.btoa(binary);
 };
 
-const livecamEl = document.getElementById('livecam');
+let livecamImg, startButton, stopButton;
 
 // connect a client socket on this socket.io server
 const socket = io('http://localhost:3000', {
@@ -23,7 +23,8 @@ socket.on('message', (data) => {
   // for now this is the only possible message data;
   if (data === 'ready') {
     // show UI
-    livecamEl.classList.remove('invisible');
+    livecamImg = document.createElement('img');
+    document.body.appendChild(livecamImg);
 
     // send response to server, that it's in 'waiting' state
     socket.send('start');

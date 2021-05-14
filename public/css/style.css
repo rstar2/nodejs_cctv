@@ -1,3 +1,15 @@
+/* Noramlize the CSS for Plume (it's already normalized, but as it's scoped these are  etter to be added */
+html {
+  line-height: 1.15; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+}
+
+body {
+  margin: 0;
+}
+
+/* Custom */
+
 .invisible {
   display: none;
 }
