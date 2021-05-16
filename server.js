@@ -1,26 +1,34 @@
-const path = require('path');
-const express = require('express');
+const path = require("path");
+const http = require("http");
+const express = require("express");
 
-const livecam = require('./livecam');
+const livecamSocketIO = require("./lib/livecam-socketio");
+const livecamMultipart = require("./lib/livecam-multipart");
 
-const app = express();
-
-app.get('/', (req, res) => res.redirect('/index.html'));
-app.use(express.static(path.resolve(__dirname, 'public')));
-
-const server = require('http').createServer(app);
-
-// setup socket.io on the 'io/livecam' path
-const ioLiveCam = require('socket.io')(server, {
-  path: '/io/livecam',
+process.addListener("unhandledRejection", (reason /*, promise */) => {
+  console.error("Global Unhandled promise rejection", reason);
+  process.exit(1);
 });
 
-livecam.init(ioLiveCam);
+// create Express server
+// and normal HTTP server out of it as it will be used for a SocketIO server
+const app = express();
+const server = http.createServer(app);
 
-// attach global error handler
+// configure the static resources endpoints
+app.use(express.static(path.resolve(__dirname, "public")));
+
+// configure common endpoint
+app.get("/history", (req, res) => res.redirect("/history.html"));
+
+// configure multiple implementations of "livecam streaming"
+livecamSocketIO.setup(server, app);
+livecamMultipart.setupEndpoints(app);
+
+// finally/lastly attach global Express server error handler
 app.use((err, req, res, next) => {
   //call handler here
-  console.error('Global error', err);
+  console.error("Global error", err);
 
   if (res.headersSent) {
     return next(err);
@@ -28,11 +36,7 @@ app.use((err, req, res, next) => {
 
   res.status(500);
   if (req.xhr) res.send({ error: err });
-  else res.render('error', { error: err });
-});
-process.addListener('unhandledRejection', (reason, promise) => {
-  console.error('Global Unhandled promise rejection', reason);
-  process.exit(1);
+  else res.render("error", { error: err });
 });
 
 // start the server - both Express and SocketIO

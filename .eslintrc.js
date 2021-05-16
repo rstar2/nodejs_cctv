@@ -4,17 +4,11 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: ['eslint:recommended'],
-  plugins: ['prettier'],
+  extends: ["eslint:recommended"],
+  plugins: ["prettier"],
   rules: {
-    'no-console':
-      process.env.NODE_ENV === 'production'
-        ? 'warn'
-        : 'off',
-    'no-debugger':
-      process.env.NODE_ENV === 'production'
-        ? 'warn'
-        : 'off',
-    'prettier/prettier': 'error',
+    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "prettier/prettier": "error",
   },
 };
