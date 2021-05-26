@@ -2,6 +2,10 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 
+const createCamera = require("./lib/camera");
+// const camera = createCamera(createCamera.OPENCV);
+const camera = createCamera(createCamera.FSWEBCAM);
+
 const livecamSocketIO = require("./lib/livecam-socketio");
 const livecamMultipart = require("./lib/livecam-multipart");
 
@@ -22,8 +26,8 @@ app.use(express.static(path.resolve(__dirname, "public")));
 app.get("/history", (req, res) => res.redirect("/history.html"));
 
 // configure multiple implementations of "livecam streaming"
-livecamSocketIO.setup(server, app);
-livecamMultipart.setupEndpoints(app);
+livecamSocketIO.setup(camera, app, server);
+livecamMultipart.setup(camera, app);
 
 // finally/lastly attach global Express server error handler
 app.use((err, req, res, next) => {

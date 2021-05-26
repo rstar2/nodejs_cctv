@@ -28,6 +28,13 @@
       "outFiles": [
         "${workspaceFolder}/**/*.js"
       ]
-    }
+    },
+
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "File",
+      "program": "${file}",
+    },
   ]
 }
